@@ -9,34 +9,25 @@
 Pod::Spec.new do |s|
   s.name             = 'RHSwiftExtensions'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of RHSwiftExtensions.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
+  s.summary          = 'Swift 常用功能封装'
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+  Swift 常用功能封装，RXSwift 扩展、Moya请求方法扩展
                        DESC
 
   s.homepage         = 'https://github.com/495929699g@gmail.com/RHSwiftExtensions'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { '495929699g@gmail.com' => '495929699g@gmail.com' }
   s.source           = { :git => 'https://github.com/495929699g@gmail.com/RHSwiftExtensions.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.swift_version = '5.0'
+  s.ios.deployment_target = '9.0'
 
-  s.source_files = 'RHSwiftExtensions/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'RHSwiftExtensions' => ['RHSwiftExtensions/Assets/*.png']
-  # }
+  s.source_files = 'RHSwiftExtensions/Classes/*.swift', 'RHSwiftExtensions/Classes/**/*.swift'
+  s.dependency 'RxCocoa'
+  s.dependency 'RxSwift', '~>4.3.1'
+  s.dependency 'Moya/RxSwift'
+#  s.dependency 'Cache'
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
