@@ -10,7 +10,7 @@ import Foundation
 
 
 /// 简单打印，带时间
-func log<T>(_ msg : T) {
+public func log<T>(_ msg : T) {
     #if DEBUG
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "HH:mm:ss"
