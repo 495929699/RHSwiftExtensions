@@ -12,7 +12,6 @@ import Moya
 
 public extension Reactive where Base: MoyaProviderType {
     
-    /**
      /// Moya加缓存的方法
      func cacheRequest(_ token: Base.Target, callbackQueue: DispatchQueue? = nil) -> Single<Response> {
      return Single.create { [weak base] single in
@@ -38,7 +37,6 @@ public extension Reactive where Base: MoyaProviderType {
      
      }
      }
-     */
     
 }
 

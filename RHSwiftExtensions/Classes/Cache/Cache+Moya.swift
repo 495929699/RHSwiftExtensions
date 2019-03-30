@@ -6,7 +6,7 @@
 //  Copyright © 2019 荣恒. All rights reserved.
 //
 
-/**
+
 import Cache
 import Moya
 
@@ -69,4 +69,3 @@ public extension Storage where T == Moya.Response {
                         fromData: { T(statusCode: 200, data: $0) }))
     }
 }
-*/

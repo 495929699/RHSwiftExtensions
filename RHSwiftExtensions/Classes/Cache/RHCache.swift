@@ -6,7 +6,7 @@
 //  Copyright © 2018 荣恒. All rights reserved.
 //
 
-/**
+
 import Foundation
 import Cache
 import Moya
@@ -49,5 +49,3 @@ public extension Storage where T: Codable {
     }
 }
 
-
-*/
