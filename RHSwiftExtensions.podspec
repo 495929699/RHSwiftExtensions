@@ -15,10 +15,10 @@ Pod::Spec.new do |s|
   Swift 常用功能封装，RXSwift 扩展、Moya请求方法扩展
                        DESC
 
-  s.homepage         = 'https://github.com/495929699g@gmail.com/RHSwiftExtensions'
+  s.homepage         = 'https://github.com/495929699/RHSwiftExtensions'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { '495929699g@gmail.com' => '495929699g@gmail.com' }
-  s.source           = { :git => 'https://github.com/495929699g@gmail.com/RHSwiftExtensions.git', :tag => s.version.to_s }
+  s.author           = { 'rongheng' => '495929699g@gmail.com' }
+  s.source           = { :git => 'https://github.com/495929699/RHSwiftExtensions.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.swift_version = '5.0'

@@ -22,7 +22,7 @@ pod 'RHSwiftExtensions'
 
 ## Author
 
-495929699g@gmail.com, 495929699g@gmail.com
+rongheng, 495929699g@gmail.com
 
 ## License
 
