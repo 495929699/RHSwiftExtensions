@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RHSwiftExtensions'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'Swift 常用功能封装'
 
   s.description      = <<-DESC
@@ -28,6 +28,6 @@ Pod::Spec.new do |s|
   s.dependency 'RxCocoa'
   s.dependency 'RxSwift', '~>4.3.1'
   s.dependency 'Moya/RxSwift'
-  s.dependency 'Cache'
+#  s.dependency 'Cache'
 
 end

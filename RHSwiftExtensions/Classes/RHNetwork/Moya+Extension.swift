@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 import Moya
-
+/*
 public extension Reactive where Base: MoyaProviderType {
     
      /// Moya加缓存的方法
@@ -39,6 +39,7 @@ public extension Reactive where Base: MoyaProviderType {
      }
     
 }
+ */
 
 // MARK: - Moya 请求方法扩展
 public extension Reactive where Base: MoyaProviderType {
