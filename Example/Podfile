@@ -3,6 +3,8 @@ use_frameworks!
 target 'RHSwiftExtensions_Example' do
   pod 'RHSwiftExtensions', :path => '../'
 
+#  pod 'HanekeSwift', :git => 'https://github.com/Haneke/HanekeSwift.git', :branch => 'master'
+  
   target 'RHSwiftExtensions_Tests' do
     inherit! :search_paths
 

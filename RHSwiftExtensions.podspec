@@ -19,7 +19,6 @@ Pod::Spec.new do |s|
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'rongheng' => '495929699g@gmail.com' }
   s.source           = { :git => 'https://github.com/495929699/RHSwiftExtensions.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.swift_version = '5.0'
   s.ios.deployment_target = '9.0'
@@ -27,7 +26,7 @@ Pod::Spec.new do |s|
   s.source_files = 'RHSwiftExtensions/Classes/*.swift', 'RHSwiftExtensions/Classes/**/*.swift'
   s.dependency 'RxCocoa'
   s.dependency 'RxSwift', '~>4.3.1'
-  s.dependency 'Moya/RxSwift'
-#  s.dependency 'Cache'
+  s.dependency 'Alamofire', '~>4.8.2'
+  s.dependency 'Moya/RxSwift', '~>12.0.1'
 
 end

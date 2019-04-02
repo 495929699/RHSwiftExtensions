@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Moya
 
 //MARK : - 结果枚举
 public enum Result<Value> {
@@ -50,21 +51,36 @@ public enum NetworkError : Error {
     case service(code : Int, message : String)
     ///返回字段不是code,msg,data 格式
     case error(value : String)
-    
-    /// 错误描述，以区分正式环境
-    var value : String {
-        #if DEVELOPMENT
-        switch self {
-        case .network:
-            return "网路链接错误，请检查网络连接"
-        case .service:
-            return "服务器错误，code 不等于 200"
-        case .error:
-            return "数据解析错误，data字段不存在或者其他字段类型不一致"
-        }
-        #else
-        return "网络请求错误，请稍后再试！"
-        #endif
-    }
 }
 
+/// 缓存类型
+///
+/// - none: 不缓存
+/// - cacheResponse: 缓存成功结果
+/// - cacheTask: 缓存失败任务
+/// - cacheResponseTask: 缓存成功结果和失败任务
+public enum NetworkCacheType {
+    case none
+    case cacheResponse
+    case cacheTask
+    case cacheResponseTask
+}
+
+//extension Moya.TargetType {
+//    var cache : NetworkCacheType { get }
+//    
+//    var headers: [String : String]? { return nil }
+//    var sampleData: Data { return Data() }
+//}
+
+/// 网络接口
+public protocol NetworkTarget : Moya.TargetType {
+    
+    var cache : NetworkCacheType { get }
+    
+}
+
+public extension NetworkTarget {
+    var headers: [String : String]? { return nil }
+    var sampleData: Data { return Data() }
+}
