@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RHSwiftExtensions'
-  s.version          = '0.1.4'
+  s.version          = '0.1.6'
   s.summary          = 'Swift 常用功能封装'
 
   s.description      = <<-DESC
