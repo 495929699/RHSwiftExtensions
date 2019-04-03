@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RHSwiftExtensions'
-  s.version          = '0.1.8'
+  s.version          = '0.1.9'
   s.summary          = 'Swift 常用功能封装'
 
   s.description      = <<-DESC
@@ -23,6 +23,7 @@ Pod::Spec.new do |s|
   s.swift_version = '5.0'
   s.ios.deployment_target = '9.0'
   s.cocoapods_version = '1.6.0'
+  s.pod_target_xcconfig = { 'SWIFT_OPTIMIZATION_LEVEL' => '-Onone' }
 
   s.source_files = 'RHSwiftExtensions/Classes/*.swift', 'RHSwiftExtensions/Classes/**/*.swift'
   s.dependency 'RxCocoa'
