@@ -7,22 +7,6 @@
 //
 
 import Foundation
-import Cache
-
-public typealias CacheResult = Cache.Result
-
-extension CacheResult {
-    
-    var value : T? {
-        switch self {
-        case let .value(v):
-            return v
-        case .error:
-            return nil
-        }
-    }
-    
-}
 
 //MARK : - 缓存管理类
 public class RHCache {

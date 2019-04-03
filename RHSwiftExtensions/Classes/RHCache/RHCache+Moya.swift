@@ -8,8 +8,6 @@
 
 
 import Moya
-import Cache
-
 
 //MARK : - 缓存网络成功的数据
 public extension RHCache {
