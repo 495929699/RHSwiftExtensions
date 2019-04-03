@@ -10,29 +10,11 @@ import Foundation
 import RxSwift
 import Moya
 
-// MARK: - 类型定义
-public typealias TargetType = Moya.TargetType
-public typealias Response = Moya.Response
-/// 网路结果类型
-public typealias NetworkResult<T> = Swift.Result<T,NetworkError>
-/// 网路结果序列
-public typealias NetworkObservable<T> = Observable<NetworkResult<T>>
-
-public typealias NetworkVoid = Swift.Result<Void,NetworkError>
-public typealias NetworkVoidObservable = Observable<NetworkVoid>
-
-/// 网络请求Key值
-public struct NetworkKey {
-    public static let code = "code"
-    public static let message = "msg"
-    public static let success = 200
-    public static let data = "data"
-}
-
 
 // MARK: - Moya RXSwift网络请求方法扩展
 public extension Reactive where Base: MoyaProviderType {
     
+    /// Moya请求方法
     func requestResponse<T>(_ token: T) -> Observable<Response> where T : TargetType & Codable {
         
         return Observable.create({ [weak base] observer in
@@ -119,9 +101,10 @@ public extension Reactive where Base: MoyaProviderType {
     
 }
 
-
+// MARK: - 对 Response 序列扩展，转成Result<T,Error>
 public extension ObservableType where E == Response {
     
+    /// 将内容 map成 Result<T,NetworkError>
     func mapResult<T : Codable>(dataKey : String = NetworkKey.data,
                                   codeKey : String = NetworkKey.code,
                                   messageKey : String = NetworkKey.message,
@@ -146,6 +129,7 @@ public extension ObservableType where E == Response {
                 .catchError({ .just(.failure(.network(value: $0))) })
     }
     
+    /// 将内容 map成 Result<Void,NetworkError>
     func mapResult(codeKey : String = NetworkKey.code,
                    messageKey : String = NetworkKey.message,
                    successCode : Int = NetworkKey.success)
@@ -290,12 +274,4 @@ public extension PrimitiveSequence where Trait == SingleTrait ,Element == Respon
         })
     }
     
-}
-
-
-public extension Notification.Name {
-
-    /// 服务器401通知
-    static let networkService_401 = Notification.Name("network_service_401")
-
 }

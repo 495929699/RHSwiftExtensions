@@ -58,12 +58,12 @@ public extension RHCache {
     
 }
 
-fileprivate let dataDiskName = "jiangroom.cache.data"
+
 
 extension Storage where T: Codable {
 
     convenience init() throws {
-        try self.init(diskConfig: DiskConfig(name: dataDiskName),
+        try self.init(diskConfig: DiskConfig(name: DiskName.object.rawValue),
                       memoryConfig: MemoryConfig(),
                       transformer: TransformerFactory.forCodable(ofType: T.self))
     }

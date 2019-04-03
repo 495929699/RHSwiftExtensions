@@ -63,23 +63,6 @@ public func network<S,P,O,T>(start : S,
 }
 
 
-/// 分页加载状态
-public enum PageLoadState : String {
-    case startRefresh
-    case endRefresh
-    case startLoadMore
-    case endLoadMore
-    
-    var isLoading : Bool {
-        switch self {
-        case .startRefresh, .startLoadMore:
-            return true
-        case .endRefresh, .endLoadMore:
-            return false
-        }
-    }
-}
-
 /// 分页网络请求通用方法
 ///
 /// - Parameters:

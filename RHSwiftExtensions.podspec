@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RHSwiftExtensions'
-  s.version          = '0.1.9'
+  s.version          = '1.0'
   s.summary          = 'Swift 常用功能封装'
 
   s.description      = <<-DESC
@@ -23,12 +23,14 @@ Pod::Spec.new do |s|
   s.swift_version = '5.0'
   s.ios.deployment_target = '9.0'
   s.cocoapods_version = '1.6.0'
-  s.pod_target_xcconfig = { 'SWIFT_OPTIMIZATION_LEVEL' => '-Onone' }
+  # 对本pod（既 RHSwiftExtensions）的编译设置，此设置会在 trunk push 设置项目的此编译配置。原因是Cache三方库 在release下 SWIFT_OPTIMIZATION_LEVEL 设置为 -Osize 时会报错。设置其他模式就OK。-O 是对性能优化
+  s.pod_target_xcconfig = { 'SWIFT_OPTIMIZATION_LEVEL' => '-O' }
 
   s.source_files = 'RHSwiftExtensions/Classes/*.swift', 'RHSwiftExtensions/Classes/**/*.swift'
   s.dependency 'RxCocoa'
   s.dependency 'RxSwift', '~>4.3.1'
   s.dependency 'Alamofire', '~>4.8.2'
   s.dependency 'Moya/RxSwift', '~>12.0.1'
+  #s.dependency 'Cache' 等作者更新，就不用手动拖入项目了
 
 end

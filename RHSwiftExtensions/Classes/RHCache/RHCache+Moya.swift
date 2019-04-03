@@ -53,13 +53,11 @@ public extension RHCache {
 }
 
 
-fileprivate let responseDiskName = "jiangromm.cache.network.response"
-
 extension Storage where T == Response {
     
     convenience init() throws {
         /// 内存缓存 5分钟过期
-        try self.init(diskConfig: DiskConfig(name: responseDiskName),
+        try self.init(diskConfig: DiskConfig(name: DiskName.response.rawValue),
                       memoryConfig: MemoryConfig(expiry: .seconds(60 * 5)),
                       transformer: TransformerFactory.forResponse())
     }
