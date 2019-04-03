@@ -9,32 +9,6 @@
 import Foundation
 import Moya
 
-//MARK : - 结果枚举
-public enum Result<Value> {
-    typealias E = Value
-    case Success(Value)
-    case Failure(Error)
-    
-    var isSuccess : Bool {
-        switch self {
-        case .Success:
-            return true
-        case .Failure:
-            return false
-        }
-    }
-    
-    var value : Value? {
-        switch self {
-        case let .Success(value):
-            return value
-        case .Failure:
-            return nil
-        }
-    }
-    
-}
-
 /// 分页返回结果n类型
 public protocol PageList : Codable & Equatable {
     associatedtype E : Codable & Equatable
@@ -59,28 +33,25 @@ public enum NetworkError : Error {
 /// - cacheResponse: 缓存成功结果
 /// - cacheTask: 缓存失败任务
 /// - cacheResponseTask: 缓存成功结果和失败任务
-public enum NetworkCacheType {
+public enum NetworkCacheType : Int {
     case none
     case cacheResponse
     case cacheTask
     case cacheResponseTask
 }
 
-//extension Moya.TargetType {
-//    var cache : NetworkCacheType { get }
-//    
-//    var headers: [String : String]? { return nil }
-//    var sampleData: Data { return Data() }
-//}
-
-/// 网络接口
-public protocol NetworkTarget : Moya.TargetType {
+public extension TargetType {
     
-    var cache : NetworkCacheType { get }
+    /// 缓存类型，默认没有缓存
+    var cache : NetworkCacheType {
+        return .none
+    }
     
-}
-
-public extension NetworkTarget {
+    /// 缓存Key
+    var cachedKey: String {
+        return "\(baseURL.absoluteString)\(path),\(method.rawValue),\(headers ?? [:]),\(task)"
+    }
+    
     var headers: [String : String]? { return nil }
     var sampleData: Data { return Data() }
 }

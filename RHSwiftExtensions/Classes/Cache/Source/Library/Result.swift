@@ -13,4 +13,24 @@ public enum CacheResult<T> {
       return CacheResult<U>.error(error)
     }
   }
+    
+    /// 是否成功
+    var isSuccess : Bool {
+        switch self {
+        case .value:
+            return true
+        case .error:
+            return false
+        }
+    }
+    
+    var value : T? {
+        switch self {
+        case let .value(v):
+            return v
+        case .error:
+            return nil
+        }
+    }
+    
 }

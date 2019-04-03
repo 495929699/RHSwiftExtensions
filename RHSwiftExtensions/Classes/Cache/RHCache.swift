@@ -56,10 +56,6 @@ public extension RHCache {
         try Storage<C>().removeObject(forKey: key)
     }
     
-    private func removeAllCachedObjects() throws {
-        try Storage<String>().removeAll()
-    }
-    
 }
 
 fileprivate let dataDiskName = "jiangroom.cache.data"

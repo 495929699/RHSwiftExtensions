@@ -17,7 +17,7 @@ public func network<S,O,T>(start : S,
     result : Observable<T>,
     error : Observable<NetworkError>)
     where S : ObservableType,
-    O : ObservableType, O.E == Result<T> {
+    O : ObservableType, O.E == Result<T,Error> {
         
         let isLoading = BehaviorRelay<Bool?>(value: nil)
         let error = BehaviorRelay<NetworkError?>(value: nil)
@@ -46,7 +46,7 @@ public func network<S,P,O,T>(start : S,
     result : Observable<T>,
     error : Observable<NetworkError>)
     where S : ObservableType,
-    O : ObservableType, O.E == Result<T>,
+    O : ObservableType, O.E == Result<T,Error>,
     P : ObservableConvertibleType {
         
         let isLoading = BehaviorRelay<Bool?>(value: nil)
@@ -87,7 +87,8 @@ public enum PageLoadState : String {
 ///   - next: 下拉序列
 ///   - params: 参数，不包含page
 ///   - selector: 请求方法，需要传page
-/// - Returns: loadState 加载状态，result 组合后的数据， isMore：是否还有数据
+///
+/// - Returns: loadState 加载状态，result 组合后的数据， isMore：是否还有数据, disposables 内部绑定生命周期，可与外部调用者绑定
 public func pageNetwork<S,N,P,O,L,T>(
     frist : S, next : N, params : P,
     request selector : @escaping (P.E, Int) throws -> O)
@@ -95,11 +96,12 @@ public func pageNetwork<S,N,P,O,L,T>(
     loadState : Observable<PageLoadState>,
     error : Observable<NetworkError>,
     page : Observable<Int>,
-    isMore : Observable<Bool>)
+    isMore : Observable<Bool>,
+    disposables : [Disposable])
 where S : ObservableType,
     N : ObservableType,
     P : ObservableConvertibleType,
-    O : ObservableType, O.E == Result<L>,
+    O : ObservableType, O.E == Result<L,Error>,
     L : PageList, L.E == T {
         let loadState = BehaviorRelay<PageLoadState?>(value: nil)
         let error = BehaviorRelay<NetworkError?>(value: nil)
@@ -131,16 +133,16 @@ where S : ObservableType,
             })
             .share(replay: 1)
         
-         _ = Observable.combineLatest(
+         let disposable1 = Observable.combineLatest(
             total.asObservable(),
             values.map({ $0.count }).asObservable())
             .map { $0 - $1 > 0 }
             .bind(to: isHasMore)
         
-        _ = Observable.merge(fristResult.map({ $0.total }),nextResult.map({ $0.total }))
+        let disposable2 = Observable.merge(fristResult.map({ $0.total }),nextResult.map({ $0.total }))
             .bind(to: total)
         
-        _ = Observable.merge(
+        let disposable3 = Observable.merge(
             fristResult.map({ $0.items }),
             nextResult.map({ $0.items })
                 .scan([], accumulator: {  [$0,$1].flatMap({ $0}) })
@@ -149,9 +151,11 @@ where S : ObservableType,
         )
             .bind(to: values)
         
+        
         return (values.asObservable(),
                 loadState.asObservable().filterNil(),
                 error.asObservable().filterNil(),
                 page.asObservable(),
-                isHasMore.asObservable())
+                isHasMore.asObservable(),
+                [disposable1,disposable2,disposable3])
 }

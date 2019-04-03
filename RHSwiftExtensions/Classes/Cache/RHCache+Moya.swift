@@ -13,28 +13,28 @@ import Moya
 public extension RHCache {
     
     /// 同步获取成功请求的数据
-    func response(for target: TargetType) throws -> Moya.Response {
-        return try Storage<Moya.Response>().object(forKey: target.cachedKey)
+    func response(for target: TargetType) throws -> Response {
+        return try Storage<Response>().object(forKey: target.cachedKey)
     }
     
     /// 异步获取成功请求的数据
-    func response(for target: String, completion : @escaping (CacheResult<Moya.Response>) -> Void) {
+    func response(for target: TargetType, completion : @escaping (CacheResult<Response>) -> Void) {
         do {
-            try Storage<Moya.Response>().async.object(forKey: target, completion: completion)
+            try Storage<Response>().async.object(forKey: target.cachedKey, completion: completion)
         } catch {
             completion(CacheResult.error(CacheError.storageError))
         }
     }
     
     /// 同步缓存成功请求的数据
-    func cachedResponse(_ cachedResponse: Moya.Response, for target: TargetType) throws {
-        try Storage<Moya.Response>().setObject(cachedResponse, forKey: target.cachedKey)
+    func cachedResponse(_ cachedResponse: Response, for target: TargetType) throws {
+        try Storage<Response>().setObject(cachedResponse, forKey: target.cachedKey)
     }
     
     /// 异步缓存成功请求的数据
-    func cachedResponse(for target: String, completion : @escaping (CacheResult<Moya.Response>) -> Void) {
+    func cachedResponse(for target: String, completion : @escaping (CacheResult<Response>) -> Void) {
         do {
-            try Storage<Moya.Response>().async.object(forKey: target, completion: completion)
+            try Storage<Response>().async.object(forKey: target, completion: completion)
         } catch {
             completion(CacheResult.error(CacheError.storageError))
         }
@@ -42,33 +42,12 @@ public extension RHCache {
     
     /// 删除缓存数据
     func removeCachedResponse(for target: TargetType) throws {
-        try Storage<Moya.Response>().removeObject(forKey: target.cachedKey)
+        try Storage<Response>().removeObject(forKey: target.cachedKey)
     }
     
     /// 删除所有缓存数据
     private func removeAllCachedResponses() throws {
-        try Storage<Moya.Response>().removeAll()
-    }
-    
-}
-
-public extension TargetType {
-
-    var cachedKey: String {
-        return "\(baseURL.absoluteString)\(path)\n\(method.rawValue)\n\(headers ?? [:])\n\(task)"
-    }
-
-}
-
-public extension RHCache {
-    
-    /// 异步缓存成功请求的数据
-    func cachedTarget(_ target: TargetType, completion : @escaping (CacheResult<TargetType>) -> Void) {
-        do {
-            try Storage<TargetType>().async.object(forKey: target, completion: completion)
-        } catch {
-            completion(CacheResult.error(CacheError.storageError))
-        }
+        try Storage<Response>().removeAll()
     }
     
 }
@@ -76,7 +55,7 @@ public extension RHCache {
 
 fileprivate let responseDiskName = "jiangromm.cache.network.response"
 
-public extension Storage where T == Moya.Response {
+extension Storage where T == Response {
     
     convenience init() throws {
         /// 内存缓存 5分钟过期
@@ -86,20 +65,10 @@ public extension Storage where T == Moya.Response {
     }
 }
 
-public extension Storage where T == Moya.TargetType {
-    
-//    convenience init() throws {
-//        /// 内存缓存 5分钟过期
-//        try self.init(diskConfig: DiskConfig(name: responseDiskName),
-//                      memoryConfig: MemoryConfig(expiry: .seconds(60 * 5)),
-//                      transformer: TransformerFactory.forResponse())
-//    }
-    
-}
 
 extension TransformerFactory {
     
-    static func forResponse() -> Transformer<Moya.Response> {
+    static func forResponse() -> Transformer<Response> {
         let toData: (Response) -> Data = { object in
             return object.data
         }

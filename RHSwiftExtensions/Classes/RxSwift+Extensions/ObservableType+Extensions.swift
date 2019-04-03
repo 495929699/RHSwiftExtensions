@@ -10,7 +10,6 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-
 // MARK: - 过滤
 public extension ObservableType {
     
@@ -36,22 +35,12 @@ public extension ObservableType {
     }
     
     /// map 成功后的值（过滤失败），并处理 Failure事件
-    func mapSuccess<T>(failure : ((Error) -> Void)? = nil) -> Observable<T> where Self.E == Result<T> {
+    func mapSuccess<T>(failure : ((Error) -> Void)? = nil) -> Observable<T> where Self.E == Result<T,Error> {
         if let failure = failure {
-            return self.do(onFailure: failure).map({ $0.value }).filterNil()
+            return self.do(onFailure: failure).map({ try? $0.get() }).filterNil()
         } else {
-            return self.map({ $0.value }).filterNil()
+            return self.map({ try? $0.get() }).filterNil()
         }
-    }
-    
-    /// 转换错误
-    func mapError<T>(to error : Error) -> Observable<Result<T>> where Self.E == Result<T> {
-        return map({ (result) in
-            switch result {
-            case .Success : return result
-            case .Failure: return .Failure(error)
-            }
-        })
     }
     
 }
@@ -80,12 +69,12 @@ public extension ObservableType {
     
     /// 添加副作用（类型为Result<T>）
     func `do`<T>(onSuccess : ((T) -> Void)? = nil,
-                 onFailure : ((Error) -> Void)? = nil) -> Observable<Result<T>>
-        where Self.E == Result<T> {
+                 onFailure : ((Error) -> Void)? = nil) -> Observable<Result<T,Error>>
+        where Self.E == Result<T,Error> {
             return self.do(onNext: { (result) in
                 switch result {
-                case let .Success(value): onSuccess?(value)
-                case let .Failure(error): onFailure?(error)
+                case let .success(value): onSuccess?(value)
+                case let .failure(error): onFailure?(error)
                 }
             })
     }
@@ -106,12 +95,12 @@ public extension ObservableType {
     /// 订阅 Result   序列类型为 Observable<Result<T>> 才能调用
     func subscribe<T>(onSuccess : @escaping (T) -> Void,
                       onFailure : @escaping (Error) -> Void) -> Disposable
-        where Self.E == Result<T> {
+        where Self.E == Result<T,Error> {
             
             return subscribe(onNext: { (result) in
                 switch result {
-                case let .Success(value): onSuccess(value)
-                case let .Failure(error): onFailure(error)
+                case let .success(value): onSuccess(value)
+                case let .failure(error): onFailure(error)
                 }
             })
     }
