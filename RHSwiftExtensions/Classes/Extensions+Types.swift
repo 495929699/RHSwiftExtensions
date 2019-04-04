@@ -42,7 +42,6 @@ public extension Notification.Name {
     
 }
 
-
 /// 分页返回结果n类型
 public protocol PageList : Codable & Equatable {
     associatedtype E : Codable & Equatable
@@ -52,9 +51,13 @@ public protocol PageList : Codable & Equatable {
 
 /// 分页加载状态
 public enum PageLoadState : String {
+    /// 开始刷新
     case startRefresh
+    /// 结束刷新
     case endRefresh
+    /// 开始上拉加载
     case startLoadMore
+    /// 结束上拉加载
     case endLoadMore
     
     var isLoading : Bool {
@@ -73,20 +76,19 @@ public enum NetworkError : Error {
     case network(value : Error)
     /// 服务器错误
     case service(code : Int, message : String)
-    ///返回字段不是code,msg,data 格式
+    /// 返回字段不是code,msg,data 格式
     case error(value : String)
 }
 
 /// 缓存类型
-///
-/// - none: 不缓存
-/// - cacheResponse: 缓存成功结果
-/// - cacheTask: 缓存失败任务
-/// - cacheResponseTask: 缓存成功结果和失败任务
 public enum NetworkCacheType : Int {
+    /// 不缓存
     case none
+    /// 缓存成功结果
     case cacheResponse
+    /// 缓存失败任务
     case cacheTask
+    /// 缓存成功结果和失败任务
     case cacheResponseTask
 }
 

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 /// 简单打印，带时间
