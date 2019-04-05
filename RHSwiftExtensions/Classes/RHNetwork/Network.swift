@@ -119,11 +119,9 @@ where S : ObservableType, N : ObservableType, P : ObservableConvertibleType,
                                            nextResult.map({ $0.total }))
             .bind(to: total)
         
-        let disposable3 = Observable.combineLatest(
+        let disposable3 = Observable.merge(
             fristResult.map({ $0.items }),
-            nextResult.map({ $0.items })
-                .startWith([]).scan([]) { $0 + $1 })
-            .map { $0 + $1 }
+            nextResult.map({ $0.items }).withLatestFrom(values){ $1 + $0 })
             .bind(to: values)
         
         return (values.asObservable(),
