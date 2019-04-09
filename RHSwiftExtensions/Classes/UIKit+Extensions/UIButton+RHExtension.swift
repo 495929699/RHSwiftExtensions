@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 extension UIButton {
     
@@ -72,43 +71,3 @@ extension UIButton {
     
 }
 
-
-// MARK: - 网络图片下载
-extension UIButton {
-    
-    /// 设置网络背景图片
-    func kf_setBackgroundImage(_ imageString : String?,
-                               _ placeholderImage : UIImage? = nil,
-                               _ state : UIControl.State = .normal,
-                               _ completion : ((UIImage) -> ())? = nil) {
-        guard let imageUrl = imageString,
-            let url = URL(string: imageUrl) else {
-                self.setBackgroundImage(placeholderImage, for: state)
-                return
-        }
-        
-        self.kf.setBackgroundImage(with: url, for: state, placeholder: placeholderImage) { (image, _, _, _) in
-            guard let image = image else { return }
-            completion?(image)
-        }
-    }
-    
-    /// 设置网络背景图片
-    @discardableResult
-    func kf_setImage(_ imageString : String?,
-                               _ placeholderImage : UIImage? = nil,
-                               _ state : UIControl.State = .normal,
-                               _ completion : ((UIImage) -> ())? = nil) -> RetrieveImageTask? {
-        guard let imageUrl = imageString,
-            let url = URL(string: imageUrl) else {
-                self.setImage(placeholderImage, for: state)
-                return nil
-        }
-        
-        return self.kf.setImage(with: url, for: state, placeholder: placeholderImage) { (image, _, _, _) in
-            guard let image = image else { return }
-            completion?(image)
-        }
-    }
-    
-}
