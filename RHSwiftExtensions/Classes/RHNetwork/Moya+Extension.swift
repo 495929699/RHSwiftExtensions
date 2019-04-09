@@ -114,33 +114,33 @@ public extension ObservableType where E == Response {
     internal func debugNetwork(codeKey : String = NetworkKey.code,
                       messageKey : String = NetworkKey.message) -> Observable<Response> {
         return self.do(onNext: { response in
-            log("================================请求结果==============================")
+            logDebug("================================请求结果==============================")
             if let request = response.request,
                 let url = request.url,
                 let httpMethod = request.httpMethod  {
-                log("URL : \(url)   \(httpMethod)")
-                log("请求头：\(request.allHTTPHeaderFields ?? [:])")
+                logDebug("URL : \(url)   \(httpMethod)")
+                logDebug("请求头：\(request.allHTTPHeaderFields ?? [:])")
             }
             
             if let code = try? response.map(Int.self, atKeyPath: codeKey),
                 let message = try? response.map(String.self, atKeyPath: messageKey) {
-                log("code :\(code) \t message : \(message) \t HttpCode : \(response.response?.statusCode ?? -1) ")
-                log("响应数据：\n \(String(data: response.data, encoding: .utf8) ?? "")")
+                logDebug("code :\(code) \t message : \(message) \t HttpCode : \(response.response?.statusCode ?? -1) ")
+                logDebug("响应数据：\n \(String(data: response.data, encoding: .utf8) ?? "")")
                 
                 switch code {
                 case 401:   // Token时效，发出退出登录通知
                     NotificationCenter.default.post(name: .networkService_401, object: nil)
-                    log("Token失效")
+                    logDebug("Token失效")
                     
                 default: break
                 }
                 
             } else {
-                log("请求结果：\(response)")
-                log("请求结果详情：\(String(data: response.data, encoding: .utf8) ?? "")")
+                logDebug("请求结果：\(response)")
+                logDebug("请求结果详情：\(String(data: response.data, encoding: .utf8) ?? "")")
             }
             
-            log("=====================================================================")
+            logDebug("=====================================================================")
         }, onError: { error in
             
         })
