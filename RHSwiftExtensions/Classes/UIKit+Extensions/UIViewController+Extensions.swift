@@ -7,26 +7,26 @@
 
 import UIKit
 
-public extension UIViewController {
-    
-    /// 设置界面
-    func setupUI() {
-        
-    }
-    
-    /// 设置布局
-    func setupLayout() {
-        
-    }
-    
-    /// 设置事件
-    func setupEvent() {
-        
-    }
-    
-    /// 设置导航栏
-    func setupNavigationBar() {
-        
-    }
-    
-}
+//public extension UIViewController {
+//
+//    /// 设置界面
+//    func setupUI() {
+//
+//    }
+//
+//    /// 设置布局
+//    func setupLayout() {
+//
+//    }
+//
+//    /// 设置事件
+//    func setupEvent() {
+//        
+//    }
+//
+//    /// 设置导航栏
+//    func setupNavigationBar() {
+//
+//    }
+//
+//}

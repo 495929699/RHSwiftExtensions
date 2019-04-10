@@ -91,23 +91,3 @@ public extension UIView {
     }
     
 }
-
-// MARK: - 扩展方法
-public extension UIView {
-    
-    /// 设置UI
-    func setupUI() {
-        
-    }
-    
-    /// 设置布局
-    func setupLayout() {
-        
-    }
-    
-    /// 设置事件
-    func setupEvent() {
-        
-    }
-    
-}
