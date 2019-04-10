@@ -9,7 +9,7 @@
 import UIKit
 
 
-extension UITableView {
+public extension UITableView {
     
     /// UITableView快捷初始化方法。自动增加内边距未设置。安全区域未设置
     ///

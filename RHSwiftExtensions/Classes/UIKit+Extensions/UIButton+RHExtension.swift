@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension UIButton {
+public extension UIButton {
     
     /// UIButton 快捷创建方法
     convenience init(

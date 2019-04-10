@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 // MARK: - UILabel初始化扩展
-extension UILabel{
+public extension UILabel {
     
     /// Label通用快捷创建方法
     convenience init(fontSize:CGFloat,

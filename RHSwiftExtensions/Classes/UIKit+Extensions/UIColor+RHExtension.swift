@@ -10,7 +10,7 @@
 import UIKit
 
 
-extension UIColor {
+public extension UIColor {
     
     convenience init(hex: Int32, alpha: CGFloat = 1.0) {
         // 16进制Int -> String

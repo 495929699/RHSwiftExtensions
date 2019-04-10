@@ -8,7 +8,7 @@
 import UIKit
 
 
-extension UIView {
+public extension UIView {
     
     /// 普通设置圆角 layer.masksToBounds = true
     func corner(_ radius : CGFloat) {
@@ -70,7 +70,7 @@ extension UIView {
 }
 
 // MARK: - 三方库抽取的方法 https://github.com/dillidon/alerts-and-pickers
-extension UIView {
+public extension UIView {
     
     func allSubViewsOf<T : UIView>(type : T.Type) -> [T]{
         var all = [T]()
@@ -84,16 +84,29 @@ extension UIView {
         getSubview(view: self)
         return all
     }
+    
+    /// 添加多个View
+    func addSubViews(_ views : UIView...) {
+        views.forEach { addSubview($0) }
+    }
+    
 }
 
 // MARK: - 扩展方法
-extension UIView {
+public extension UIView {
     
+    /// 设置UI
     func setupUI() {
         
     }
     
+    /// 设置布局
     func setupLayout() {
+        
+    }
+    
+    /// 设置事件
+    func setupEvent() {
         
     }
     

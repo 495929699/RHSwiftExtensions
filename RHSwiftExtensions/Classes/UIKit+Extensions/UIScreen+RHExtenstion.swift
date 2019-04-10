@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 // MARK: - 适配
-extension UIScreen {
+public extension UIScreen {
     
     static var frame : CGRect {
         return main.bounds

@@ -9,7 +9,7 @@
 import Foundation
 
 
-extension UserDefaults {
+public extension UserDefaults {
     
     /// 保存自定义对象 类型限制 Codable
     func setObject<T>(value : T, forKey key : String) where T : Codable  {

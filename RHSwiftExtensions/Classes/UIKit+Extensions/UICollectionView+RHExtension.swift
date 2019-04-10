@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension UICollectionViewFlowLayout {
+public extension UICollectionViewFlowLayout {
     
     /// 快捷初始化方法
     convenience init(itemSize: CGSize,
