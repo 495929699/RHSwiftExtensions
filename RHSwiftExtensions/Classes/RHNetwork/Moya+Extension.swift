@@ -9,23 +9,26 @@
 import Foundation
 import RxSwift
 import Moya
+import WCDBSwift
 
+public struct NetworkErrorRequest : TableCodable {
+    public typealias CodingKeys = <#type#>
+    
+    var task : TargetType
+}
 
 // MARK: - Moya RXSwift网络请求方法扩展
 public extension Reactive where Base: MoyaProviderType {
     
-    /// Moya请求方法
-    func requestResponse<T>(_ token: T) -> Observable<Response> where T : TargetType & Codable {
+    /// Moya请求Response方法
+    func requestResponse<T : TargetType>(_ token: T) -> Observable<Response> {
         
         return Observable.create({ [weak base] observer in
             
-            if [.cacheResponse, .cacheResponseTask].contains(token.cache) {
-                //先取缓存
-                RHCache.shared.response(for: token) { value in
-                    if let response = value.value {
-                        observer.onNext(response)
-                    }
-                }
+            // 先取缓存
+            if token.cache == .cacheResponse,
+                let response = try? RHCache.shared.response(for: token) {
+                observer.onNext(response)
             }
             
             // 发请求
@@ -36,16 +39,16 @@ public extension Reactive where Base: MoyaProviderType {
                     observer.onCompleted()
                     
                     // 缓存数据
-                    if [.cacheResponse, .cacheResponseTask].contains(token.cache) {
-                        try? RHCache.shared.cachedResponse(response, for: token as! Base.Target)
+                    if token.cache == .cacheResponse {
+                        RHCache.shared.asyncCachedResponse(for: token)
                     }
-                    
+        
                 case let .failure(error):
                     observer.onError(error)
                     
-                    // 缓存失败任务
-                    if [.cacheTask, .cacheResponseTask].contains(token.cache) {
-                        try? RHCache.shared.cachedObject(token, for: token.cachedKey)
+                    // 缓存失败任务（如数据库，不是使用缓存）
+                    if token.cache == .cacheRequest {
+                        
                     }
                     
                 }
@@ -58,16 +61,37 @@ public extension Reactive where Base: MoyaProviderType {
         
     }
     
+    /// Moya请求Result方法 -> Observable<Result<R,NetworkError>>
+    func requestResult<T : TargetType, R : Codable>(
+        _ token: T,
+        dataKey : String = NetworkKey.data,
+        codeKey : String = NetworkKey.code,
+        messageKey : String = NetworkKey.message,
+        successCode : Int = NetworkKey.success) -> NetworkObservable<R> {
+        return requestResponse(token)
+            .mapResult(dataKey: dataKey, codeKey: codeKey,
+                       messageKey: messageKey, successCode: successCode)
+    }
+    
+    /// Moya请求Success方法 -> Observable<Result<Void,NetworkError>>
+    func requestSuccess<T : TargetType>(
+        _ token: T,
+        codeKey : String = NetworkKey.code,
+        messageKey : String = NetworkKey.message,
+        successCode : Int = NetworkKey.success) -> NetworkObservable<Void> {
+        return requestResponse(token)
+            .mapSuccess(codeKey: codeKey, messageKey: messageKey, successCode: successCode)
+    }
+    
 }
 
+
 // MARK: - 对 Response 序列扩展，转成Result<T,Error>
-public extension ObservableType where E == Response {
+extension ObservableType where E == Response {
     
     /// 将内容 map成 Result<T,NetworkError>
-    func mapResult<T : Codable>(dataKey : String = NetworkKey.data,
-                                  codeKey : String = NetworkKey.code,
-                                  messageKey : String = NetworkKey.message,
-                                  successCode : Int = NetworkKey.success)
+    func mapResult<T : Codable>(dataKey : String, codeKey : String,
+                                messageKey : String, successCode : Int)
         -> NetworkObservable<T> {
             return debugNetwork()
                 .flatMap({ response -> NetworkObservable<T> in
@@ -90,9 +114,7 @@ public extension ObservableType where E == Response {
     }
     
     /// 将内容 map成 Result<Void,NetworkError>
-    func mapResult(codeKey : String = NetworkKey.code,
-                   messageKey : String = NetworkKey.message,
-                   successCode : Int = NetworkKey.success)
+    func mapSuccess(codeKey : String, messageKey : String, successCode : Int)
         -> NetworkVoidObservable {
             return debugNetwork()
                 .flatMap({ response -> NetworkVoidObservable in
@@ -101,7 +123,7 @@ public extension ObservableType where E == Response {
                         let error = String(data: response.data, encoding: .utf8) ?? "没有错误信息"
                         return .just(.failure(.error(value: error)))
                 }
-                guard code == 200 else {
+                guard code == successCode else {
                     return .just(.failure(.service(code: code, message: message)))
                 }
                 
@@ -111,7 +133,7 @@ public extension ObservableType where E == Response {
     }
     
     /// 调试操作符，打印网路请求的响应
-    internal func debugNetwork(codeKey : String = NetworkKey.code,
+    func debugNetwork(codeKey : String = NetworkKey.code,
                       messageKey : String = NetworkKey.message) -> Observable<Response> {
         return self.do(onNext: { response in
             logDebug("================================请求结果==============================")

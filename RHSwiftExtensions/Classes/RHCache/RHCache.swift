@@ -43,11 +43,13 @@ public extension RHCache {
     }
     
     /// 异步缓存数据
-    func cachedObject<C: Codable>(_ cachedObject: C, for key: String, completion : @escaping (CacheResult<C>) -> Void) {
+    func asyncCachedObject<C: Codable>(_ cachedObject: C, for key: String, completion : ((CacheResult<C>) -> Void)? = nil) {
         do {
-            try Storage<C>().async.object(forKey: key, completion: completion)
+            try Storage<C>().async.object(forKey: key, completion: { result in
+                completion?(result)
+            })
         } catch {
-            completion(CacheResult.error(CacheError.storageError))
+            completion?(CacheResult.error(CacheError.storageError))
         }
     }
     

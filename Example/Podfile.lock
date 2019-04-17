@@ -1,20 +1,26 @@
 PODS:
   - Alamofire (4.8.2)
+  - Moya (12.0.1):
+    - Moya/Core (= 12.0.1)
   - Moya/Core (12.0.1):
     - Alamofire (~> 4.1)
     - Result (~> 4.0)
-  - Moya/RxSwift (12.0.1):
-    - Moya/Core
-    - RxSwift (~> 4.0)
   - Result (4.1.0)
-  - RHSwiftExtensions (1.0):
+  - RHSwiftExtensions (1.0.0):
     - Alamofire (~> 4.8.2)
-    - Moya/RxSwift (~> 12.0.1)
+    - Moya (~> 12.0.1)
     - RxCocoa
     - RxSwift (~> 4.3.1)
+    - WCDB.swift
   - RxCocoa (4.4.1):
     - RxSwift (~> 4.0)
   - RxSwift (4.3.1)
+  - SQLiteRepairKit (1.2.2):
+    - WCDBOptimizedSQLCipher (~> 1.2.0)
+  - WCDB.swift (1.0.8.2):
+    - SQLiteRepairKit (~> 1.2.0)
+    - WCDBOptimizedSQLCipher (~> 1.2.0)
+  - WCDBOptimizedSQLCipher (1.2.1)
 
 DEPENDENCIES:
   - RHSwiftExtensions (from `../`)
@@ -26,6 +32,9 @@ SPEC REPOS:
     - Result
     - RxCocoa
     - RxSwift
+    - SQLiteRepairKit
+    - WCDB.swift
+    - WCDBOptimizedSQLCipher
 
 EXTERNAL SOURCES:
   RHSwiftExtensions:
@@ -35,9 +44,12 @@ SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Moya: cf730b3cd9e005401ef37a85143aa141a12fd38f
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
-  RHSwiftExtensions: d63a93fcd75f92a837ca253c304d8af1e1a27ef0
+  RHSwiftExtensions: 5a581363a5dd8c5317bdea8ca12695597dadfbc8
   RxCocoa: 2f35a76bf8887872e28a1914112395b11b8e0e64
   RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
+  SQLiteRepairKit: 35aaae5a8838adb85f5b1eb4d796055be6060a4b
+  WCDB.swift: 05d509d7a0e60fb6e11c34eb7e4027c0fab5849f
+  WCDBOptimizedSQLCipher: baf44493b0c7a3d49e97bc5b64a3856f6428ddd1
 
 PODFILE CHECKSUM: 9743d239511570583c6d5cd89ddf5ea43e3f7ab0
 

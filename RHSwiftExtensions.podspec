@@ -30,7 +30,8 @@ Pod::Spec.new do |s|
   s.dependency 'RxCocoa'
   s.dependency 'RxSwift', '~>4.3.1'
   s.dependency 'Alamofire', '~>4.8.2'
-  s.dependency 'Moya/RxSwift', '~>12.0.1'
+  s.dependency 'Moya', '~>12.0.1'
+  s.dependency 'WCDB.swift'
   #s.dependency 'Cache' 等作者更新，就不用手动拖入项目了
 
 end

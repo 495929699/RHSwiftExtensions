@@ -32,11 +32,13 @@ public extension RHCache {
     }
     
     /// 异步缓存成功请求的数据
-    func cachedResponse(for target: String, completion : @escaping (CacheResult<Response>) -> Void) {
+    func asyncCachedResponse(for target: TargetType, completion : ((CacheResult<Response>) -> Void)? = nil) {
         do {
-            try Storage<Response>().async.object(forKey: target, completion: completion)
+            try Storage<Response>().async.object(forKey: target.cachedKey, completion: { result in
+                completion?(result)
+            })
         } catch {
-            completion(CacheResult.error(CacheError.storageError))
+            completion?(CacheResult.error(CacheError.storageError))
         }
     }
     
