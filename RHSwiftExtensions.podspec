@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RHSwiftExtensions'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Swift 常用功能封装'
 
   s.description      = <<-DESC
@@ -20,18 +20,29 @@ Pod::Spec.new do |s|
   s.author           = { 'rongheng' => '495929699g@gmail.com' }
   s.source           = { :git => 'https://github.com/495929699/RHSwiftExtensions.git', :tag => s.version.to_s }
 
-  s.swift_version = '5.0'
   s.ios.deployment_target = '9.0'
-#  s.cocoapods_version = '1.6.0'
+  s.swift_version = '5.0'
+  s.cocoapods_version = '>=1.6.0'
   # 对本pod（既 RHSwiftExtensions）的编译设置，此设置会在 trunk push 设置项目的此编译配置。原因是Cache三方库 在release下 SWIFT_OPTIMIZATION_LEVEL 设置为 -Osize 时会报错。设置其他模式就OK。-Onone 是不优化
-  s.pod_target_xcconfig = { 'SWIFT_OPTIMIZATION_LEVEL' => '-Onone' }
-
+  s.pod_target_xcconfig = {
+    'SWIFT_VERSION' => '5.0',
+    'SWIFT_OPTIMIZATION_LEVEL' => '-Onone'
+  }
+  
   s.source_files = 'RHSwiftExtensions/Classes/*.swift', 'RHSwiftExtensions/Classes/**/*.swift'
   s.dependency 'RxCocoa'
-  s.dependency 'RxSwift', '~>4.3.1'
+  s.dependency 'RxSwift', '~>4.5'
   s.dependency 'Alamofire', '~>4.8.2'
-  s.dependency 'Moya', '~>12.0.1'
-  s.dependency 'WCDB.swift'
+  s.dependency 'Moya', '~>13.0'
+  #s.dependency 'WCDB.swift'
   #s.dependency 'Cache' 等作者更新，就不用手动拖入项目了
+  
+  # 子模块b模板
+  #  s.default_subspec  = 'Core'
+  #  s.subspec 'Core' do |ss|
+  #    ss.source_files  = 'Sources/Moya/', 'Sources/Moya/Plugins/'
+  #    ss.dependency 'Alamofire', '~> 4.1'
+  #    ss.dependency 'Result', '~> 4.1'
+  #    ss.framework  = 'Foundation'
 
 end

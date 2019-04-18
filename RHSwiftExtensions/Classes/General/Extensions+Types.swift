@@ -88,6 +88,11 @@ public enum NetworkCacheType : Int {
     case cacheResponse
     /// 缓存失败任务
     case cacheRequest
+    
+    /// 缓存错误请求的Key
+    static var cacheRequestKey : String {
+        return "RHCache.error.cacheRequest"
+    }
 }
 
 
@@ -114,18 +119,14 @@ public extension TargetType {
     
 }
 
-public protocol TargetTypeCreate where Self : TargetType {
-    typealias TargetValue = (baseURL : String, path : String, method : String, headers : [String : Any], task : Task.Value)
+/// Target转换协议
+public protocol TargetTransform where Self : TargetType {
     
-    var value : TargetValue { get }
+    /// TargetType转换到String
+    func toValue() -> String?
     
-    static func targetForm(value : TargetValue) -> TargetType
-}
-public extension TargetTypeCreate {
-    
-    var value : TargetValue {
-        return (baseURL : baseURL.absoluteString, path : path, method : method.rawValue, headers : headers ?? [:], task : task.value)
-    }
+    /// 根据String生成TargetType
+    init(value : String)
     
 }
 

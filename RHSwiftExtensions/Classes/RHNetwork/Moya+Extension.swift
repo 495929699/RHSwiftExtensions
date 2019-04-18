@@ -11,16 +11,11 @@ import RxSwift
 import Moya
 import WCDBSwift
 
-public struct NetworkErrorRequest : TableCodable {
-    public typealias CodingKeys = <#type#>
-    
-    var task : TargetType
-}
-
-// MARK: - Moya RXSwift网络请求方法扩展
+// MARK: - Moya RxSwift网络请求方法扩展
 public extension Reactive where Base: MoyaProviderType {
     
     /// Moya请求Response方法
+    /// - Parameter token: 带有缓存机制，取决于 TargetType.cache，取缓存时用RHCache取 NetworkCacheType.cacheRequestKey 字段下的数据，结果为 [String]，再将结果转换为[TargetType]，然后从新发请求
     func requestResponse<T : TargetType>(_ token: T) -> Observable<Response> {
         
         return Observable.create({ [weak base] observer in
@@ -47,10 +42,20 @@ public extension Reactive where Base: MoyaProviderType {
                     observer.onError(error)
                     
                     // 缓存失败任务（如数据库，不是使用缓存）
-                    if token.cache == .cacheRequest {
+                    if token.cache == .cacheRequest,
+                        let target = token as? TargetTransform,
+                        let value = target.toValue() {
                         
+                        // 先异步获取缓存
+                        RHCache.shared.object([String].self, for: NetworkCacheType.cacheRequestKey, completion: { result in
+                            guard result.isSuccess else { return }
+                            
+                            var values = result.value ?? []
+                            values.append(value)
+                            // 再将新的数据加到values中，在异步缓存
+                            try? RHCache.shared.asyncCachedObject(values, for: NetworkCacheType.cacheRequestKey)
+                        })
                     }
-                    
                 }
             }
             
@@ -132,7 +137,7 @@ extension ObservableType where E == Response {
                 .catchError({ .just(.failure(.network(value: $0))) })
     }
     
-    /// 调试操作符，打印网路请求的响应
+    /// 预处理网路请求（发出服务器401通知），打印网路请求的响应
     func debugNetwork(codeKey : String = NetworkKey.code,
                       messageKey : String = NetworkKey.message) -> Observable<Response> {
         return self.do(onNext: { response in
