@@ -6,9 +6,11 @@ PODS:
     - Alamofire (~> 4.1)
     - Result (~> 4.1)
   - Result (4.1.0)
+  - RHCache (0.1.5)
   - RHSwiftExtensions (1.0.1):
     - Alamofire (~> 4.8.2)
     - Moya (~> 13.0)
+    - RHCache (~> 0.1)
     - RxCocoa
     - RxSwift (~> 4.5)
   - RxCocoa (4.5.0):
@@ -23,6 +25,7 @@ SPEC REPOS:
     - Alamofire
     - Moya
     - Result
+    - RHCache
     - RxCocoa
     - RxSwift
 
@@ -34,7 +37,8 @@ SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Moya: 161263550064ff8a4948e8ff63137fd72a876292
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
-  RHSwiftExtensions: d20aeb34f424d420773bbab71803d9d80cee27eb
+  RHCache: 84cca0c6637c27039219808afb2d58be8c6196b3
+  RHSwiftExtensions: 977d3274a0265affbdffee3b0125a8fc72469824
   RxCocoa: cbf70265dc65a981d4ac982e513c10cf23df24a0
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
 

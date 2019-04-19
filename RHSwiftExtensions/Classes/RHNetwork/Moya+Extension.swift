@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 import Moya
-import WCDBSwift
+import RHCache
 
 // MARK: - Moya RxSwift网络请求方法扩展
 public extension Reactive where Base: MoyaProviderType {
@@ -18,7 +18,32 @@ public extension Reactive where Base: MoyaProviderType {
     /// - Parameter token: 带有缓存机制，取决于 TargetType.cache，取缓存时用RHCache取 NetworkCacheType.cacheRequestKey 字段下的数据，结果为 [String]，再将结果转换为[TargetType]，然后从新发请求
     func requestResponse<T : TargetType>(_ token: T) -> Observable<Response> {
         
+        /// 请求错误的处理
+        let errorHandle = {
+            // 缓存失败任务（如数据库，不是使用缓存）
+            if token.cache == .cacheRequest,
+                let target = token as? TargetTransform,
+                let value = target.toValue() {
+                
+                // 先异步获取缓存
+                RHCache.shared.object([String].self, for: NetworkCacheType.cacheRequestKey, completion: { result in
+                    guard result.isSuccess else { return }
+                    
+                    var values = result.value ?? []
+                    values.append(value)
+                    // 再将新的数据加到values中，在异步缓存
+                    RHCache.shared.asyncCachedObject(values, for: NetworkCacheType.cacheRequestKey, completion: { _ in})
+                })
+            }
+        }
+        
         return Observable.create({ [weak base] observer in
+            
+            // 先判断是否有网，没有可用网络直接发送完成
+            if !NetworkReachabilityService.shared.isHasNetwork {
+                observer.onError(NetworkError.error(value: "网络不可用"))
+                errorHandle()
+            }
             
             // 先取缓存
             if token.cache == .cacheResponse,
@@ -35,27 +60,12 @@ public extension Reactive where Base: MoyaProviderType {
                     
                     // 缓存数据
                     if token.cache == .cacheResponse {
-                        RHCache.shared.asyncCachedResponse(for: token)
+                        RHCache.shared.asyncCachedResponse(for: token, completion: { _ in })
                     }
         
                 case let .failure(error):
                     observer.onError(error)
-                    
-                    // 缓存失败任务（如数据库，不是使用缓存）
-                    if token.cache == .cacheRequest,
-                        let target = token as? TargetTransform,
-                        let value = target.toValue() {
-                        
-                        // 先异步获取缓存
-                        RHCache.shared.object([String].self, for: NetworkCacheType.cacheRequestKey, completion: { result in
-                            guard result.isSuccess else { return }
-                            
-                            var values = result.value ?? []
-                            values.append(value)
-                            // 再将新的数据加到values中，在异步缓存
-                            try? RHCache.shared.asyncCachedObject(values, for: NetworkCacheType.cacheRequestKey)
-                        })
-                    }
+                    errorHandle()
                 }
             }
             
@@ -163,13 +173,13 @@ extension ObservableType where E == Response {
                 }
                 
             } else {
-                logDebug("请求结果：\(response)")
-                logDebug("请求结果详情：\(String(data: response.data, encoding: .utf8) ?? "")")
+                logDebug("请求错误：\(response)")
+                logDebug("请求错误详情：\(String(data: response.data, encoding: .utf8) ?? "没有错误信息")")
             }
             
             logDebug("=====================================================================")
         }, onError: { error in
-            
+            logDebug("请求错误：\(error)")
         })
     }
     
