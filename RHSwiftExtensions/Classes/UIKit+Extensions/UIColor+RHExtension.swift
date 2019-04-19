@@ -26,7 +26,7 @@ public extension UIColor {
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 
-//    /// 随机颜色
+    /// 随机颜色
 //    static var randomColor : UIColor {
 //        let colors = ["202-216-217","181-214-188","219-198-200",
 //                      "203-222-223","220-217-201","251-216-191",
