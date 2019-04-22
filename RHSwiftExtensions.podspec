@@ -8,11 +8,11 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RHSwiftExtensions'
-  s.version          = '1.2.0'
+  s.version          = '1.2.1'
   s.summary          = 'Swift 常用功能封装'
 
   s.description      = <<-DESC
-  Swift 常用功能封装，RXSwift 扩展、Moya请求方法扩展
+  Swift 常用功能封装
                        DESC
 
   s.homepage         = 'https://github.com/495929699/RHSwiftExtensions'

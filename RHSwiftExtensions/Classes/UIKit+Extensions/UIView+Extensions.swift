@@ -11,9 +11,12 @@ import UIKit
 public extension UIView {
     
     /// 普通设置圆角 layer.masksToBounds = true
-    func corner(_ radius : CGFloat) {
+    @discardableResult
+    func corner(_ radius : CGFloat) -> Self {
         self.layer.cornerRadius = radius
         self.layer.masksToBounds = true
+        
+        return self
     }
     
     /// 特殊方式设置圆角，必须要等self的frame 出来后才有效果
@@ -26,9 +29,12 @@ public extension UIView {
     }
     
     /// 边框
-    func border(_ color : UIColor, _ width : CGFloat) {
+    @discardableResult
+    func border(_ color : UIColor, _ width : CGFloat) -> Self {
         self.layer.borderColor = color.cgColor
         self.layer.borderWidth = width
+        
+        return self
     }
     
     /// 阴影
@@ -72,7 +78,7 @@ public extension UIView {
 // MARK: - 三方库抽取的方法 https://github.com/dillidon/alerts-and-pickers
 public extension UIView {
     
-    func allSubViewsOf<T : UIView>(type : T.Type) -> [T]{
+    func allSubViewsOf<T : UIView>(type : T.Type) -> [T] {
         var all = [T]()
         func getSubview(view: UIView) {
             if let aView = view as? T{

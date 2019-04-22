@@ -8,6 +8,10 @@
 
 import UIKit
 
+public enum UIError : Error {
+    case dequeue
+}
+
 /// 通用视图协议
 public protocol ViewType {
     /// 设置界面
@@ -33,10 +37,11 @@ extension UIViewController : ViewType {}
 
 
 public protocol ViewIdentifierType where Self : UIView {
-    static var ID : String { get }
+//    static var ID : String { get }
 }
 extension ViewIdentifierType {
     static var ID: String {
         return String(describing: self)
     }
 }
+extension UIView : ViewIdentifierType {}

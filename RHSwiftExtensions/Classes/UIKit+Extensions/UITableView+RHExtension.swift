@@ -59,11 +59,11 @@ public extension UITableView {
 
 public extension UITableView {
     
-    func register<Cell : UITableViewCell>(cell: Cell.Type) where Cell : ViewIdentifierType {
+    func register<Cell : UITableViewCell>(_ cell: Cell.Type) where Cell : ViewIdentifierType {
         register(cell, forCellReuseIdentifier: Cell.ID)
     }
     
-    func register<View : UITableViewHeaderFooterView>(HeaderFooter view: View.Type) where View : ViewIdentifierType  {
+    func register<View : UITableViewHeaderFooterView>(_ view: View.Type) where View : ViewIdentifierType  {
         register(view, forHeaderFooterViewReuseIdentifier: View.ID)
     }
     
@@ -71,12 +71,18 @@ public extension UITableView {
         return dequeueReusableCell(withIdentifier: reusableCell.ID) as? Cell
     }
     
-    func dequeue<Cell : UITableViewCell>(_ resusableCell: Cell.Type, indexPath: IndexPath) -> Cell? where Cell: ViewIdentifierType {
-        return dequeueReusableCell(withIdentifier: resusableCell.ID, for: indexPath) as? Cell
+    func dequeue<Cell : UITableViewCell>(_ resusableCell: Cell.Type, for indexPath: IndexPath) throws -> Cell where Cell: ViewIdentifierType {
+        guard let cell = dequeueReusableCell(withIdentifier: resusableCell.ID, for: indexPath) as? Cell else {
+            throw UIError.dequeue
+        }
+        return cell
     }
     
-    func dequeue<View : UITableViewHeaderFooterView>(_ reusableCell: View.Type) -> View? where View : ViewIdentifierType {
-        return dequeueReusableHeaderFooterView(withIdentifier: reusableCell.ID) as? View
+    func dequeue<View : UITableViewHeaderFooterView>(_ reusableCell: View.Type) throws -> View where View : ViewIdentifierType {
+        guard let cell = dequeueReusableHeaderFooterView(withIdentifier: reusableCell.ID) as? View else {
+            throw UIError.dequeue
+        }
+        return cell
     }
     
 }

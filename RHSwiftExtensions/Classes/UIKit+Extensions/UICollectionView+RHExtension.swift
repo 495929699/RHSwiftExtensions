@@ -98,22 +98,26 @@ public enum SupplementaryViewOfKind: String {
     }
 }
 
-extension UICollectionView {
+public extension UICollectionView {
     
-    public func register<Cell : UICollectionViewCell>(cell: Cell.Type) where Cell : ViewIdentifierType {
+    func register<Cell : UICollectionViewCell>(_ cell: Cell.Type) where Cell : ViewIdentifierType {
         register(cell, forCellWithReuseIdentifier: cell.ID)
     }
     
-    public func register<Cell : UICollectionReusableView>(cell: Cell.Type, forSupplementaryViewOfKind kind: SupplementaryViewOfKind) where Cell : ViewIdentifierType  {
+    func register<Cell : UICollectionReusableView>(_ cell: Cell.Type, forSupplementaryViewOfKind kind: SupplementaryViewOfKind) where Cell : ViewIdentifierType  {
         register(cell, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: cell.ID)
     }
     
-    public func dequeue<Cell : UICollectionViewCell>(_ reuseableCell: Cell.Type, for indexPath: IndexPath) -> Cell? where Cell : ViewIdentifierType  {
-        return dequeueReusableCell(withReuseIdentifier: reuseableCell.ID, for: indexPath) as? Cell
+    func dequeue<Cell : UICollectionViewCell>(_ reuseableCell: Cell.Type, for indexPath: IndexPath) throws -> Cell where Cell : ViewIdentifierType  {
+        guard let cell = dequeueReusableCell(withReuseIdentifier: reuseableCell.ID, for: indexPath) as? Cell else { throw UIError.dequeue }
+        return cell
     }
     
-    public func dequeue<View : UICollectionReusableView>(_ reuseableCell: View.Type, ofKind kind: SupplementaryViewOfKind, for indexPath: IndexPath) -> View? where View : ViewIdentifierType {
-        return dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: reuseableCell.ID, for: indexPath) as? View
+    func dequeue<View : UICollectionReusableView>(_ reuseableCell: View.Type, ofKind kind: SupplementaryViewOfKind, for indexPath: IndexPath) throws -> View where View : ViewIdentifierType {
+        guard let view = dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: reuseableCell.ID, for: indexPath) as? View else {
+            throw UIError.dequeue
+        }
+        return view
     }
     
 }
