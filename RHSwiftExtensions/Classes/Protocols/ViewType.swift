@@ -20,16 +20,16 @@ public protocol ViewType {
     func setupLayout()
     /// 设置事件
     func setupEvent()
-    /// 设置导航栏
-    func setupNavigationBar()
+//    /// 设置导航栏
+//    func setupNavigationBar()
 }
 
-public extension ViewType {
-    func setupUI() { }
-    func setupLayout() { }
-    func setupEvent() { }
-    func setupNavigationBar() { }
-}
+//public extension ViewType {
+//    func setupUI() { }
+//    func setupLayout() { }
+//    func setupEvent() { }
+//    func setupNavigationBar() { }
+//}
 
 
 extension UIView : ViewType {}

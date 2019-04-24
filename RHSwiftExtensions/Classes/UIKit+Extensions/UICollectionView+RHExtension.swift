@@ -38,7 +38,7 @@ public extension UICollectionViewFlowLayout {
     
 }
 
-extension UICollectionView {
+public extension UICollectionView {
     
     convenience init(layout : UICollectionViewLayout,
                      showsVerticalScrollIndicator : Bool = false,

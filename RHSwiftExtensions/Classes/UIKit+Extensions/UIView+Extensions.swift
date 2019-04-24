@@ -7,6 +7,14 @@
 
 import UIKit
 
+public extension UIView {
+    
+    convenience init(_ backgroundColor : UIColor) {
+        self.init()
+        self.backgroundColor = backgroundColor
+    }
+    
+}
 
 public extension UIView {
     
