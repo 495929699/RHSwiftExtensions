@@ -46,22 +46,21 @@ extension UIViewController {
         swizzle(self)
     }
     
+    @objc open func bindViewModel() {}
+    
+    #warning("不能设置此属性(view.backgroundColor)，不然在跳转界面是控制器就变成背景颜色了,此方法最好不设置属性")
+    @objc open func setupUI() {}
+    @objc open func setupEvent() {}
+    @objc open func setupLayout() {}
+    @objc open func setupNavigationBar() {}
+    
     @objc internal func ksr_viewDidLoad() {
         self.ksr_viewDidLoad()
         setupUI()
         setupEvent()
         
-        self.bindViewModel()
+        bindViewModel()
     }
-    
-    @objc open func bindViewModel() {}
-    
-    @objc open func setupUI() {
-        view.backgroundColor = UIColor.white
-    }
-    @objc open func setupEvent() {}
-    @objc open func setupLayout() {}
-    @objc open func setupNavigationBar() {}
     
     @objc internal func ksr_viewWillAppear(_ animated: Bool) {
         self.ksr_viewWillAppear(animated)
@@ -70,4 +69,15 @@ extension UIViewController {
         setupNavigationBar()
     }
     
+    @objc internal func ksr_init(nibName: String?, bundle: Bundle?) -> UIViewController {
+        let controller = self.ksr_init(nibName: nibName, bundle: bundle)
+        setupUI()
+        setupEvent()
+        
+        bindViewModel()
+        
+        return controller
+    }
+    
 }
+

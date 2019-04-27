@@ -1,20 +1,18 @@
 //
-//  UIView+Swizzle.swift
-//  RHSwiftExtensions
+//  UITableViewCell+Swizzle.swift
+//  Alamofire
 //
-//  Created by 荣恒 on 2019/4/23.
+//  Created by 荣恒 on 2019/4/26.
 //
 
 import UIKit
 
-private func swizzle(_ v: UIView.Type) {
+private func swizzle(_ v: UITableViewCell.Type) {
     
     [
-        (#selector(v.traitCollectionDidChange(_:)), #selector(v.ksr_traitCollectionDidChange(_:))),
-        (#selector(v.layoutSubviews), #selector(v.ksr_layoutSubviews)),
-        (#selector(v.init(frame:)), #selector(v.ksr_init(frame:)))
-    ]
-            .forEach { original, swizzled in
+        (#selector(v.init(style:reuseIdentifier:)), #selector(v.ksr_init(style:reuseIdentifier:)))
+        ]
+        .forEach { original, swizzled in
             
             guard let originalMethod = class_getInstanceMethod(v, original),
                 let swizzledMethod = class_getInstanceMethod(v, swizzled) else { return }
@@ -32,43 +30,36 @@ private func swizzle(_ v: UIView.Type) {
             } else {
                 method_exchangeImplementations(originalMethod, swizzledMethod)
             }
-        }
+    }
 }
 
 private var hasSwizzled = false
 
-extension UIView {
+extension UITableViewCell {
     
-    final public class func doBadSwizzleStuff() {
+    final public class func cellDoBadSwizzleStuff() {
         guard !hasSwizzled else { return }
         
         hasSwizzled = true
         swizzle(self)
     }
-
-    @objc open func bindViewModel() {}
     
-    @objc open func setupUI() {}
-    @objc open func setupEvent() {}
-    @objc open func setupLayout() {}
-    
-    @objc internal func ksr_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection) {
-        self.ksr_traitCollectionDidChange(previousTraitCollection)
+    @objc open override func setupUI() {
+        super.setupUI()
+        
+        self.selectionStyle = .none
+        self.backgroundColor = UIColor.white
     }
     
-    @objc internal func ksr_layoutSubviews() {
-        self.ksr_layoutSubviews()
-        setupLayout()
-    }
-    
-    @objc internal func ksr_init(frame: CGRect) -> UIView {
-        let view = self.ksr_init(frame: frame)
+    @objc internal func ksr_init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) -> UITableViewCell {
+        let cell = self.ksr_init(style: style, reuseIdentifier: restorationIdentifier)
+        
         setupUI()
         setupEvent()
         
         bindViewModel()
         
-        return view
+        return cell
     }
     
 }

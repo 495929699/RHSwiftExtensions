@@ -25,6 +25,7 @@ public extension UITableView {
                      separatorStyle : UITableViewCell.SeparatorStyle = .none,
                      bounces : Bool? = nil,
                      backgroundColor : UIColor? = nil,
+                     rowHeight : CGFloat? = nil,
                      contentInset : UIEdgeInsets? = nil,
                      dataSource : UITableViewDataSource? = nil,
                      delegate : UITableViewDelegate? = nil) {
@@ -42,6 +43,9 @@ public extension UITableView {
         }
         if let backgroundColor = backgroundColor {
             self.backgroundColor = backgroundColor
+        }
+        if let rowHeight = rowHeight {
+            self.rowHeight = rowHeight
         }
         if let contentInset = contentInset {
             self.contentInset = contentInset
