@@ -104,8 +104,8 @@ public extension UICollectionView {
         register(cell, forCellWithReuseIdentifier: cell.ID)
     }
     
-    func register<Cell : UICollectionReusableView>(_ cell: Cell.Type, forSupplementaryViewOfKind kind: SupplementaryViewOfKind) where Cell : ViewIdentifierType  {
-        register(cell, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: cell.ID)
+    func register<View : UICollectionReusableView>(_ view: View.Type, forSupplementaryViewOfKind kind: SupplementaryViewOfKind) where View : ViewIdentifierType  {
+        register(view, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: view.ID)
     }
     
     func dequeue<Cell : UICollectionViewCell>(_ reuseableCell: Cell.Type, for indexPath: IndexPath) throws -> Cell where Cell : ViewIdentifierType  {

@@ -31,13 +31,6 @@ extension UIView {
 // MARK: Frame Extensions
 extension UIView {
 
-    /// EZSE: add multiple subviews
-    public func addSubviews(_ views: [UIView]) {
-        views.forEach { [weak self] eachView in
-            self?.addSubview(eachView)
-        }
-    }
-
     //TODO: Add pics to readme
     /// EZSE: resizes this view so it fits the largest subview
     public func resizeToFitSubviews() {

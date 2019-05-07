@@ -100,8 +100,10 @@ public extension UIView {
     }
     
     /// 添加多个View
-    func addSubViews(_ views : UIView...) {
-        views.forEach { addSubview($0) }
+    func addSubviews(_ views : UIView...) {
+        views.forEach { [weak self] eachView in
+            self?.addSubview(eachView)
+        }
     }
     
 }
