@@ -1,5 +1,5 @@
 PODS:
-  - RHSwiftExtensions (1.2.0)
+  - RHSwiftExtensions (1.2.3)
 
 DEPENDENCIES:
   - RHSwiftExtensions (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  RHSwiftExtensions: f4f6271909aae153a9d966faf65966838b465ff4
+  RHSwiftExtensions: 8b0c8b70d6ecebe3e19435f935ad209320ec4755
 
 PODFILE CHECKSUM: 9743d239511570583c6d5cd89ddf5ea43e3f7ab0
 
