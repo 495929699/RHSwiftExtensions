@@ -100,23 +100,28 @@ public enum SupplementaryViewOfKind: String {
 
 public extension UICollectionView {
     
-    func register<Cell : UICollectionViewCell>(_ cell: Cell.Type) where Cell : ViewIdentifierType {
+    /// 注册UICollectionViewCell
+    func register<Cell: UICollectionViewCell>(_ cell: Cell.Type) {
         register(cell, forCellWithReuseIdentifier: cell.ID)
     }
     
-    func register<View : UICollectionReusableView>(_ view: View.Type, forSupplementaryViewOfKind kind: SupplementaryViewOfKind) where View : ViewIdentifierType  {
+    /// 批量注册UICollectionViewCell
+    func registers<Cell: UICollectionViewCell>(_ cells: Cell.Type...) {
+        cells.forEach { register($0) }
+    }
+    
+    func register<View: UICollectionReusableView>(_ view: View.Type, forSupplementaryViewOfKind kind: SupplementaryViewOfKind) {
         register(view, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: view.ID)
     }
     
-    func dequeue<Cell : UICollectionViewCell>(_ reuseableCell: Cell.Type, for indexPath: IndexPath) throws -> Cell where Cell : ViewIdentifierType  {
-        guard let cell = dequeueReusableCell(withReuseIdentifier: reuseableCell.ID, for: indexPath) as? Cell else { throw UIError.dequeue }
+    func dequeue<Cell: UICollectionViewCell>(_ reuseableCell: Cell.Type, for indexPath: IndexPath) throws -> Cell  {
+        guard let cell = dequeueReusableCell(withReuseIdentifier: reuseableCell.ID, for: indexPath) as? Cell else { throw NSError() }
         return cell
     }
     
-    func dequeue<View : UICollectionReusableView>(_ reuseableCell: View.Type, ofKind kind: SupplementaryViewOfKind, for indexPath: IndexPath) throws -> View where View : ViewIdentifierType {
-        guard let view = dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: reuseableCell.ID, for: indexPath) as? View else {
-            throw UIError.dequeue
-        }
+    func dequeue<View: UICollectionReusableView>(_ reuseableCell: View.Type, ofKind kind: SupplementaryViewOfKind, for indexPath: IndexPath) throws -> View {
+        guard let view = dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: reuseableCell.ID, for: indexPath) as? View
+            else { throw NSError() }
         return view
     }
     

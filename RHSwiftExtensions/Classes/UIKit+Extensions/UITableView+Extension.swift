@@ -63,30 +63,30 @@ public extension UITableView {
 
 public extension UITableView {
     
-    func register<Cell : UITableViewCell>(_ cell: Cell.Type) where Cell : ViewIdentifierType {
+    /// 注册UITableViewCell，不需要Identifier。内部已实现唯一标识
+    func register<Cell : UITableViewCell>(_ cell: Cell.Type) {
         register(cell, forCellReuseIdentifier: Cell.ID)
     }
     
-    func register<View : UITableViewHeaderFooterView>(_ view: View.Type) where View : ViewIdentifierType  {
+    /// 批量注册UITableViewCell
+    func registers<Cell : UITableViewCell>(_ cells: Cell.Type...) {
+        cells.forEach { register($0) }
+    }
+    
+    func register<View : UITableViewHeaderFooterView>(_ view: View.Type)  {
         register(view, forHeaderFooterViewReuseIdentifier: View.ID)
     }
     
-    func dequeue<Cell : UITableViewCell>(_ reusableCell: Cell.Type) -> Cell? where Cell : ViewIdentifierType {
-        return dequeueReusableCell(withIdentifier: reusableCell.ID) as? Cell
-    }
-    
-    func dequeue<Cell : UITableViewCell>(_ resusableCell: Cell.Type, for indexPath: IndexPath) throws -> Cell where Cell: ViewIdentifierType {
-        guard let cell = dequeueReusableCell(withIdentifier: resusableCell.ID, for: indexPath) as? Cell else {
-            throw UIError.dequeue
-        }
+    func dequeue<Cell : UITableViewCell>(_ resusableCell: Cell.Type, for indexPath: IndexPath) throws -> Cell {
+        guard let cell = dequeueReusableCell(withIdentifier: resusableCell.ID, for: indexPath) as? Cell
+            else { throw NSError() }
         return cell
     }
     
-    func dequeue<View : UITableViewHeaderFooterView>(_ reusableCell: View.Type) throws -> View where View : ViewIdentifierType {
-        guard let cell = dequeueReusableHeaderFooterView(withIdentifier: reusableCell.ID) as? View else {
-            throw UIError.dequeue
-        }
-        return cell
+    func dequeue<View : UITableViewHeaderFooterView>(_ reusableView: View.Type) throws -> View {
+        guard let view = dequeueReusableHeaderFooterView(withIdentifier: reusableView.ID) as? View
+            else { throw NSError() }
+        return view
     }
     
 }

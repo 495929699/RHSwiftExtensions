@@ -8,14 +8,11 @@
 
 import UIKit
 
-public enum UIError : Error {
-    case dequeue
-}
-
 public protocol ViewIdentifierType where Self : UIView { }
 extension ViewIdentifierType {
     static var ID: String {
         return String(describing: self)
     }
 }
+
 extension UIView : ViewIdentifierType {}

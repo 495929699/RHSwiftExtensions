@@ -21,6 +21,7 @@ public extension UILabel {
                      backgroundColor : UIColor? = nil,
                      text: String? = nil){
         self.init(frame:CGRect.zero)
+        
         self.font = bold ? .boldSystemFont(ofSize: fontSize) : .systemFont(ofSize:fontSize)
         self.textColor = textColor
         if let textAlignment = textAlignment {
@@ -37,4 +38,28 @@ public extension UILabel {
         }
     }
     
+    /// Label通用快捷创建方法
+    convenience init(font: UIFont,
+                     textColor: UIColor,
+                     textAlignment: NSTextAlignment? = nil,
+                     numberOfLines: Int? = nil,
+                     backgroundColor: UIColor? = nil,
+                     text: String? = nil) {
+        self.init(frame:CGRect.zero)
+        
+        self.font = font
+        self.textColor = textColor
+        if let textAlignment = textAlignment {
+            self.textAlignment = textAlignment
+        }
+        if let numberOfLines = numberOfLines {
+            self.numberOfLines = numberOfLines
+        }
+        if let backgroundColor = backgroundColor {
+            self.backgroundColor = backgroundColor
+        }
+        if let text = text {
+            self.text = text
+        }
+    }
 }
