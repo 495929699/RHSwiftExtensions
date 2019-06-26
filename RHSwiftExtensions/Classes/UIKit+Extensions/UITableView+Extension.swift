@@ -83,10 +83,4 @@ public extension UITableView {
         return cell
     }
     
-    func dequeue<View : UITableViewHeaderFooterView>(_ reusableView: View.Type) throws -> View {
-        guard let view = dequeueReusableHeaderFooterView(withIdentifier: reusableView.ID) as? View
-            else { throw NSError() }
-        return view
-    }
-    
 }
