@@ -64,23 +64,34 @@ public extension UITableView {
 public extension UITableView {
     
     /// 注册UITableViewCell，不需要Identifier。内部已实现唯一标识
-    func register<Cell : UITableViewCell>(_ cell: Cell.Type) {
-        register(cell, forCellReuseIdentifier: Cell.ID)
+    func registerCell<T : UITableViewCell>(_ cell: T.Type) {
+        register(cell, forCellReuseIdentifier: cell.ID)
     }
     
     /// 批量注册UITableViewCell
-    func registers<Cell : UITableViewCell>(_ cells: Cell.Type...) {
-        cells.forEach { register($0) }
+    func registerCellList(_ cellList: UITableViewCell.Type...) {
+        cellList.forEach { registerCell($0) }
     }
     
-    func register<View : UITableViewHeaderFooterView>(_ view: View.Type)  {
-        register(view, forHeaderFooterViewReuseIdentifier: View.ID)
+    func registerView<T : UITableViewHeaderFooterView>(_ view: T.Type)  {
+        register(view, forHeaderFooterViewReuseIdentifier: view.ID)
     }
     
-    func dequeue<Cell : UITableViewCell>(_ resusableCell: Cell.Type, for indexPath: IndexPath) throws -> Cell {
-        guard let cell = dequeueReusableCell(withIdentifier: resusableCell.ID, for: indexPath) as? Cell
-            else { throw NSError() }
+    func dequeueReusableCell<T : UITableViewCell>(_ resusableCell: T.Type, for indexPath: IndexPath) throws -> T {
+        guard
+            let cell = dequeueReusableCell(withIdentifier: resusableCell.ID, for: indexPath) as? T
+        else { throw NSError() }
+        
         return cell
+    }
+    
+    func dequeueReusableView<T: UITableViewHeaderFooterView>(_ headerFooterView: T.Type) throws -> T {
+        guard
+            let view = dequeueReusableHeaderFooterView(withIdentifier: headerFooterView.ID) as? T
+        else {
+            throw NSError()
+        }
+        return view
     }
     
 }

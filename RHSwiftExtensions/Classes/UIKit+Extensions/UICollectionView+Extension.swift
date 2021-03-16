@@ -101,26 +101,26 @@ public enum SupplementaryViewOfKind: String {
 public extension UICollectionView {
     
     /// 注册UICollectionViewCell
-    func register<Cell: UICollectionViewCell>(_ cell: Cell.Type) {
+    func registerCell<T: UICollectionViewCell>(_ cell: T.Type) {
         register(cell, forCellWithReuseIdentifier: cell.ID)
     }
     
     /// 批量注册UICollectionViewCell
-    func registers<Cell: UICollectionViewCell>(_ cells: Cell.Type...) {
-        cells.forEach { register($0) }
+    func registerCellList(_ cellList: UICollectionViewCell.Type...) {
+        cellList.forEach { registerCell($0) }
     }
     
-    func register<View: UICollectionReusableView>(_ view: View.Type, forSupplementaryViewOfKind kind: SupplementaryViewOfKind) {
+    func registerView<T: UICollectionReusableView>(_ view: T.Type, forSupplementaryViewOfKind kind: SupplementaryViewOfKind) {
         register(view, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: view.ID)
     }
     
-    func dequeue<Cell: UICollectionViewCell>(_ reuseableCell: Cell.Type, for indexPath: IndexPath) throws -> Cell  {
-        guard let cell = dequeueReusableCell(withReuseIdentifier: reuseableCell.ID, for: indexPath) as? Cell else { throw NSError() }
+    func dequeueReusableCell<T: UICollectionViewCell>(_ reuseableCell: T.Type, for indexPath: IndexPath) throws -> T  {
+        guard let cell = dequeueReusableCell(withReuseIdentifier: reuseableCell.ID, for: indexPath) as? T else { throw NSError() }
         return cell
     }
     
-    func dequeue<View: UICollectionReusableView>(_ reuseableCell: View.Type, ofKind kind: SupplementaryViewOfKind, for indexPath: IndexPath) throws -> View {
-        guard let view = dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: reuseableCell.ID, for: indexPath) as? View
+    func dequeueReusableSupplementaryView<T: UICollectionReusableView>(_ reuseableCell: T.Type, ofKind kind: SupplementaryViewOfKind, for indexPath: IndexPath) throws -> T {
+        guard let view = dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: reuseableCell.ID, for: indexPath) as? T
             else { throw NSError() }
         return view
     }
